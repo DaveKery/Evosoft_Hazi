@@ -18,7 +18,6 @@ class RoomStatus {
 
         int NoOfcleanSpot = 0;
 
-
         while(true){
             NoOfcleanSpot = (int) (Math.random() * 25);
             if(NoOfcleanSpot > 0) break;

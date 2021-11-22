@@ -90,7 +90,8 @@ class RobotVacuumCleaner extends RoomStatus implements VacuumCleanerFunctions {
 
                             if(catInTheRoom[0] == col && catInTheRoom[1] == row){
 
-                                errorDate = LocalDate.now();  // error moment when a cat blocks the machine
+                                errorDate = LocalDate.now();  // error date moment when a cat blocks the machine
+
                                 System.out.println();
                                 throw new RuntimeException("ERROR: Cat blocks the road at row:" + catInTheRoom[1] + " and column:" + catInTheRoom[0]);      // throw an ERROR and stops the whole process
                             }

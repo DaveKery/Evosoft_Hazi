@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 interface VacuumCleanerFunctions {
     public void startMachine(int NoOfSteps, int[] catInTheRoom);
@@ -12,7 +13,7 @@ interface VacuumCleanerFunctions {
 public class Main extends RobotVacuumCleaner {
 
     private static boolean withoutError = true;
-    public static int[] catInTheRoom = {0,0};   // 1st value: column, 2nd value: row (range of these two values must be between 1-5, 0-0 means cat will not bother the vacuum cleaner at all)
+    public static int[] catInTheRoom = {1,1};   // 1st value: column, 2nd value: row (range of these two values must be between 1-5, 0-0 means cat will not bother the vacuum cleaner at all)
 
     public static void main(String[] args) {
 
@@ -22,7 +23,7 @@ public class Main extends RobotVacuumCleaner {
 
         try{
             if(vacuum1.getNumberOfSteps() > 25 || vacuum1.getNumberOfSteps() < 1){  // number of steps cannot be larger than 25 since the size of room is 25
-                errorDate = LocalDate.now();  // error moment
+                errorDate = LocalDate.now();  // error date moment
                 throw new ArithmeticException("ERROR");
             }
             vacuum1.startMachine(vacuum1.getNumberOfSteps(), catInTheRoom);   // start the vacuum cleaner machine
@@ -40,6 +41,10 @@ public class Main extends RobotVacuumCleaner {
         }
     }
 
+    /* @method name: getConnection
+     * @param: ---
+     * @return: null
+     * @description: It is used for storing exception data caught during working process */
     public static Connection getConnection() {
 
         try{
@@ -48,12 +53,12 @@ public class Main extends RobotVacuumCleaner {
 
             String url = "jdbc:postgresql://localhost:5432/";
             String userName = "postgres";
-            String password = "******";
+            String password = "*******";
 
             Connection conn = DriverManager.getConnection(url, userName, password);
             System.out.println("Successfully connected to PostgreSQL database!");
 
-            String query = "insert into Evosoft_hazi(errortime) values(\'" + errorDate + "\');";    // storing NULL value for some reason???
+            String query = "insert into Evosoft_hazi(errortime) values(\'" + errorDate + "\');";
 
             PreparedStatement preparedStmt = conn.prepareStatement(query);  // sending SQL statements to the database
             preparedStmt.execute();
@@ -70,17 +75,3 @@ public class Main extends RobotVacuumCleaner {
         return null;
     }
 }
-
-/* iml előző tartalma:
-<?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <exclude-output />
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-    </content>
-    <orderEntry type="inheritedJdk" />
-    <orderEntry type="sourceFolder" forTests="false" />
-  </component>
-</module>
-* */
